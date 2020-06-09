@@ -3,15 +3,15 @@ Conflux 智能合约开发体验
 ![](https://confluxnetwork.org/static/logo-w@2-a4802194a8a9b32e5ad6649b9c13cc33.png)
 
 [Conflux](https://confluxnetwork.org/) 是新一代高性能公链，基于自研的TreeGraph账本结构和GHAST共识协议，能够在完全去中心化的前提下，实现3000+TPS的吞吐率。
-并且其智能合约VM，可以完全兼容EVM智能合约，意味着以太坊的智能合约可以不用改动直接部署到Conflux区块链上。
+并且其智能合约VM，可以完全兼容EVM，意味着以太坊的智能合约可以不用改动直接部署到Conflux区块链上。
 目前Conflux主网正在分阶段（共三阶段）上线，计划年内完成正式发布。目前处于第一阶段(Pontus), 小伙伴们可以提前体验Conflux 飞一般的速度。
 
 * [创建账号](#创建Conflux区块链账号)
 * [运行本地节点](运行本地节点)
 * [js-sdk发送交易](使用js-conflux-sdk发送交易)
-* [开发&编译智能合约]()
-* [部署]()
-* [智能合约交互]()
+* [开发&编译智能合约](开发编译智能合约)
+* [部署](合约部署)
+* [智能合约交互](智能合约交互)
 * [参考](参考资料)
 
 ## 创建Conflux区块链账号
@@ -39,7 +39,7 @@ Conflux 官方的另外一个钱包是 Web 版的 wallet，不需要安装，直
 3. FansCoin（社区币）管理功能
 4. 网络切换（web wallet 目前只支持Potus主网）
 5. Conflux浏览器链接
-6. Potus 代币申领链接，每小时可领一次（并非真CFX，之后主网重启，该代币失效）
+6. Pontus 代币申领链接，每小时可领一次（并非真CFX，之后主网重启，该代币失效）
 
 需要注意的地方：
 1. 创建账号的密码和keystore文件一定要妥善保管，有这两者才能进入钱包，如果被别人获取会造成资产被盗
@@ -148,7 +148,7 @@ main().catch(e => console.error(e));
 其中有几个地方需要注意：
 
 1. 示例中使用的是Conflux Testnet 的rpc 服务
-2. 私钥需要以0x开头，从钱包中获取到的私钥是不包含ox的
+2. 私钥需要以0x开头，从钱包中获取到的私钥是不包含0x的
 3. 示例代码可以在 node.js 环境中运行，具体参看 sendTx.js
 4. 具体使用防范参看[官方文档](https://developer.conflux-chain.org/docs/conflux-doc/docs/send_transaction)和[源码](https://github.com/Conflux-Chain/js-conflux-sdk)
 
@@ -186,7 +186,7 @@ contract Coin {
 
 ### Remix在线IDE
 [Remix](https://remix.ethereum.org/)是一个以太坊智能合约的在线IDE，提供智能合约开发，测试，编译，部署等功能，本文使用Remix来编译 coin 智能合约。
-本例子中我们将用它来编译智能合约，当然你还可以用solc编译器，truffle等工具编译。打开remix网址之后我们会看到如下界面
+本例子中我们将用它来编译智能合约，当然你还可以用solc，truffle等工具编译。打开 remix 网址之后我们会看到如下界面
 
 ![](./images/remix-home.jpg)
 
@@ -210,7 +210,7 @@ contract Coin {
 
 ## 合约部署
 合约编译好，终于可以进行部署操作了，如果前几步你都操作成功的话，你现在应该有一个Conflux 的账号和私钥，通过Facuet 领取了一些CFX币，有智能合约的abi和bytecode。
-并且你还会使用 js-conflux-sdk, 好我们现在来将合约部署到conflux网络。
+并且你还会使用 js-conflux-sdk, 好我们现在来将合约部署到conflux网络。可以使用下边的合约部署脚本：
 
 ```js
 const { Conflux } = require('js-conflux-sdk');
@@ -248,13 +248,59 @@ async function main() {
 
 main().catch(e => console.error(e));
 ```
+设置好私钥，通过 node 执行该脚本，即可完成智能合约的部署。
 
 需要注意的几点：
-1. coin.bin.json 文件中包含从Remix复制出来的bytecode数据的 object 信息，并且需要添加 0x 前缀，并用双引号引起来才能通过require的方式加载进来 （或者直接将object放到代码中也可以）
+1. coin.bin.json 文件中包含从 Remix 复制出来的 bytecode 数据的 object 信息，并且需要添加 0x 前缀，并用双引号引起来才能通过require的方式加载进来 （或者直接将object 放到代码中也可以）
 2. 使用 abi 和 bytecode 构建 contract， 然后调用 constructor，并使用 account 发送 transaction
-3. confirmed() 方法会定时请求 conflux 网络，直到交易被确认。
+3. confirmed() 方式调用会定时请求 conflux 网络，直到交易被确认。
 4. 合约创建成功后 receipt 中会包含交易的 hash，合约的地址等信息，可以到 confluxscan 中查看详情。
+5. 也可以使用 confluxscan 的[合约部署页面](http://www.confluxscan.io/contract/create)进行部署
+
+## 智能合约交互
+智能合约部署完成之后我们就大功告成了，现在让我们来玩一玩我们的合约吧，跟合约交互主要分为两种获取合约状态（获取余额），更改合约状态（转账交易）。前者不会消耗代币，直接调用即可，并且可以直接返回结果；改变合约状态则需要通过发送交易的方式触发，需要花费一些代币，并且是异步完成的，不会立刻得到结果，只能得到一个交易的hash。以下脚本演示了如何进行着两种合约交互。
+
+```js
+// invoke-contract.js
+const { Conflux, util } = require('js-conflux-sdk');
+
+async function main() {
+const PRIVATE_KEY = '0xxxxxxx';
+  const cfx = new Conflux({
+    url: 'http://testnet-jsonrpc.conflux-chain.org:12537',
+    defaultGasPrice: 100,
+    defaultGas: 1000000,
+    logger: console,
+  });
+
+  const account = cfx.Account(PRIVATE_KEY); // create account instance
+
+  const contractAddress = '0x8a43514200778e9ff023039b55ca3192064f8e44';
+  const contract = cfx.Contract({
+    abi: require('./contracts/coin.abi.json'),
+    address: contractAddress,
+  });
+
+  let address = '0x1386B4185A223EF49592233b69291bbe5a80C527';
+
+  let ret;
+  ret = await contract.mint(address, 100).sendTransaction({
+      from: account,
+  }).confirmed();
+  console.log(ret.toString());
+
+  ret = await contract.balances(contractAddress); 
+  console.log(ret.toString());
+}
+
+main().catch(e => console.error(e));
+```
+
+## 总结
+因为conflux主网刚刚上线，相关文档还在不断完善当中，所以这里把整个的操作过程展示了一下，conflux 能够很好的兼容以太坊智能合约，所以合约的开发和编译生态可以直接复用以太坊
+，既不同学习新的合约开发语言，相关的工具也能拿来直接用。整个体验过程中conflux交易速度的确比以太坊快很多，还是相当令人惊艳。希望 conflux 的开发生态和用户能够很快繁荣起来。
 
 ## 参考资料
 
 1. [Conflux doc](https://developer.conflux-chain.org/)
+2. [Conflux 区块浏览器 confluxscan](http://www.confluxscan.io/)

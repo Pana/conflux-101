@@ -1,6 +1,6 @@
 /* eslint-disable */
 const { Conflux } = require('js-conflux-sdk');
-const MAIN_PRIVATE_KEY = '0xxxxxxxxxx';
+const MAIN_PRIVATE_KEY = '0xxxxxxx';
 const testNetUrl = 'http://testnet-jsonrpc.conflux-chain.org:12537'
 
 async function main() {

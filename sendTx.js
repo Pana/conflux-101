@@ -11,7 +11,7 @@ async function main() {
   });
 
   // account private key
-  const PRIVATE_KEY = '0xxxxxxxxxxxx';  
+  const PRIVATE_KEY = '0xxxxxxx';  
   const account = cfx.Account(PRIVATE_KEY); // create account instance
   const receiver = '0x13d2bA4eD43542e7c54fbB6c5fCCb9f269C1f94C';
 
