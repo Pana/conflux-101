@@ -8,7 +8,7 @@ Conflux 智能合约开发体验
 
 * [创建账号](#创建Conflux区块链账号)
 * [运行本地节点](运行本地节点)
-* [js-sdk发送交易]()
+* [js-sdk发送交易](使用js-conflux-sdk发送交易)
 * [开发&编译智能合约]()
 * [部署]()
 * [智能合约交互]()
@@ -89,9 +89,9 @@ $ cargo build --release
 ### 运行本地节点
 运行节点我们需要有一个配置文件，在代码 run目录下的 default.toml (toml格式文件) 是配置文件模板，我们只需要简单配置几项即可用于运行节点。
 
-1. ```public_address="124.193.101.50:32323"``` 节点对外的地址，有IP（公网IP，可以通过Google或百度搜索IP获得）和端口号（默认32323）组成
+1. ```public_address="124.193.101.50:32323"``` 节点对外的地址，由IP（公网IP，可以通过Google或百度搜索IP获得）和端口号（默认32323）组成
 2. ```mining_author=1386b4185a223ef49592233b69291bbe5a80c527``` 挖矿奖励目标账号，之前创建的账号可以填到这里（注意去掉地址前边的0x，不然启动会报错）
-3. ```bootnodes``` 此项是用于同步数据的启动节点地址配置，版本 0.5.5.4 这里默认配置的是主网 Pontus 的节点，可以不用修改
+3. ```bootnodes``` 此项是用于同步数据的启动节点地址配置，版本 0.5.0.4 这里默认配置的是主网 Pontus 的节点，可以不用修改
 4. ```start_mining=true``` 如果想开启挖矿，打开注释，并设置为true 
 5. ```jsonrpc_local_http_port=12539``` 本地 rpc 端口配置，打开注释，即可访问本地rpc服务
 
@@ -106,13 +106,155 @@ $ ../target/release/conflux --config default.toml
 ![](./images/local-node-syncing.png)
 
 
-## 使用js-sdk发送交易
+## 使用js-conflux-sdk发送交易
+Conflux 不仅提供标准的 JSONRPC 2.0 接口用于跟链进行交互，同时也提供了多个语言的SDK，方便快速开发和集成，包括JavaScript，Java，Go等。其中 JS 版功能最完善。
+如果你进行过以太坊智能合约开发，可以把它理解成 web3.js，同样也使用 npm 进行安装。
+
+```npm install js-conflux-sdk```
+
+安装完成之后，我们就可以用它发送一笔 CFX 交易了
+
+```js
+// sendTx.js
+const { Conflux, util } = require('js-conflux-sdk');
+
+async function main() {
+  const TestNetUrl = 'http://testnet-jsonrpc.conflux-chain.org:12537';
+  // initiate a Conflux object
+  const cfx = new Conflux({
+    url: TestNetUrl,
+    defaultGasPrice: 100, // The default gas price of your following transactions
+    defaultGas: 1000000, // The default gas of your following transactions
+    logger: console,
+  });
+
+  // account private key
+  const PRIVATE_KEY = '0xxxxxxxxxxxx';  
+  const account = cfx.Account(PRIVATE_KEY); // create account instance
+  const receiver = '0x13d2bA4eD43542e7c54fbB6c5fCCb9f269C1f94C';
+
+  let txParams = {
+      from: account, // from account instance and will by sign by account.privateKey
+      to: receiver, // accept address string or account instance
+      value: util.unit.fromCFXToDrip(0.125), // use unit to transfer from 0.125 CFX to Drip
+  };
+  // send transaction
+  const txHash = await cfx.sendTransaction(txParams);
+  console.log(txHash);
+}
+  
+main().catch(e => console.error(e));
+```
+其中有几个地方需要注意：
+
+1. 示例中使用的是Conflux Testnet 的rpc 服务
+2. 私钥需要以0x开头，从钱包中获取到的私钥是不包含ox的
+3. 示例代码可以在 node.js 环境中运行，具体参看 sendTx.js
+4. 具体使用防范参看[官方文档](https://developer.conflux-chain.org/docs/conflux-doc/docs/send_transaction)和[源码](https://github.com/Conflux-Chain/js-conflux-sdk)
+
+## 开发编译智能合约
+Conflux 几乎完全兼容以太坊智能合约，以太坊的智能合约通常情况可以不经修改直接部署到Conflux网络，这里主要演示Conflux的Dapp部署过程和方式，所以在以太坊官网找了一个简单的
+coin 智能合约。可以进行基本的挖矿和发送操作。
+
+```js
+pragma solidity >=0.5.0 <0.7.0;
+
+contract Coin {
+    address public minter;
+    mapping (address => uint) public balances;
+
+    event Sent(address from, address to, uint amount);
+
+    constructor() public {
+        minter = msg.sender;
+    }
+
+    function mint(address receiver, uint amount) public {
+        require(msg.sender == minter);
+        require(amount < 1e60);
+        balances[receiver] += amount;
+    }
+
+    function send(address receiver, uint amount) public {
+        require(amount <= balances[msg.sender], "Insufficient balance.");
+        balances[msg.sender] -= amount;
+        balances[receiver] += amount;
+        emit Sent(msg.sender, receiver, amount);
+    }
+}
+```
+
+### Remix在线IDE
+[Remix](https://remix.ethereum.org/)是一个以太坊智能合约的在线IDE，提供智能合约开发，测试，编译，部署等功能，本文使用Remix来编译 coin 智能合约。
+本例子中我们将用它来编译智能合约，当然你还可以用solc编译器，truffle等工具编译。打开remix网址之后我们会看到如下界面
+
+![](./images/remix-home.jpg)
+
+1. Icon panel 可以在这里进行编辑，编译等主功能切换
+2. Side panel 点击加号可以添加文件，然后把我们的 coin.sol 代码复制进来
+3. 具体的文件列表
+4. Remix支持 solidity 和 vyper 两种合约开发语言，我们这里先选择 solidity 环境（重要）
+5. 控制台：会显示编译，部署等日志信息，调试的时候回非常有用。
+
+文件创建好，并把coin合约代码复制进来之后，我们就可以进行编译了
+
+![](./images/remix-compile.jpg)
+
+1. 首先在Icon panel选择第二项，编译功能
+2. 可以切换不同版本的编译器，这里可以直接使用默认版本
+3. 点击compile coin.sol 进行编译（需要先让该文件处于选中状态）
+4. 编译成功之后可以看到 abi 和 bytecode 的下载按钮，需要把两个下来下来保存到本地文件中。
+
+至此Remix帮我们实现了编译solidity合约的功能，其实它的功能非常强大，有兴趣的小伙伴可以自己探索。
 
 
+## 合约部署
+合约编译好，终于可以进行部署操作了，如果前几步你都操作成功的话，你现在应该有一个Conflux 的账号和私钥，通过Facuet 领取了一些CFX币，有智能合约的abi和bytecode。
+并且你还会使用 js-conflux-sdk, 好我们现在来将合约部署到conflux网络。
 
+```js
+const { Conflux } = require('js-conflux-sdk');
+const MAIN_PRIVATE_KEY = '0xxxxxxxxxx';
+const testNetUrl = 'http://testnet-jsonrpc.conflux-chain.org:12537'
 
+async function main() {
+  const cfx = new Conflux({
+    url: testNetUrl,
+    defaultGasPrice: 100,
+    defaultGas: 1000000,
+    logger: console,
+  });
 
+  const account = cfx.Account(MAIN_PRIVATE_KEY); // create account instance
+  console.log(account.address);
 
-### 参考资料
+  // ================================ Contract ================================
+  // create contract instance
+  const contract = cfx.Contract({
+    abi: require('./contracts/coin.abi.json'),
+    bytecode: require('./contracts/coin.bin.json'),
+  });
+
+  // estimate deploy contract gas use
+  //   const estimate = await contract.constructor().estimateGasAndCollateral();
+  //   console.log(JSON.stringify(estimate));
+
+  // deploy the contract, and get `contractCreated`
+  const receipt = await contract.constructor()
+    .sendTransaction({ from: account })
+    .confirmed();
+  console.log(receipt); 
+}
+
+main().catch(e => console.error(e));
+```
+
+需要注意的几点：
+1. coin.bin.json 文件中包含从Remix复制出来的bytecode数据的 object 信息，并且需要添加 0x 前缀，并用双引号引起来才能通过require的方式加载进来 （或者直接将object放到代码中也可以）
+2. 使用 abi 和 bytecode 构建 contract， 然后调用 constructor，并使用 account 发送 transaction
+3. confirmed() 方法会定时请求 conflux 网络，直到交易被确认。
+4. 合约创建成功后 receipt 中会包含交易的 hash，合约的地址等信息，可以到 confluxscan 中查看详情。
+
+## 参考资料
 
 1. [Conflux doc](https://developer.conflux-chain.org/)
