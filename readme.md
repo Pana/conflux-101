@@ -8,6 +8,7 @@ Conflux 智能合约开发体验
 
 * [创建账号](#创建Conflux区块链账号)
 * [运行本地节点](运行本地节点)
+* [js-sdk发送交易]()
 * [开发&编译智能合约]()
 * [部署]()
 * [智能合约交互]()
@@ -18,11 +19,11 @@ Conflux 智能合约开发体验
 区块链钱包软件都提供创建账号的功能，目前Conflux提供了两款钱包 Conflux Portal 和 Web wallet。
 
 
-#### Conflux Portal
+### Conflux Portal
 [Conflux Portal](https://portal.conflux-chain.org/) 是一个浏览器扩展程序，需要到浏览器扩展市场安装。Portal 是在 MetaMask 基础之上修改，并适配Conflux网络的，主要提供账号创建，恢复，收发代币，查看交易，切换不同网络等功能。
 
 
-#### (Web) Conflux Wallet
+### (Web) Conflux Wallet
 Conflux 官方的另外一个钱包是 Web 版的 wallet，不需要安装，直接通过[网址](https://wallet.confluxscan.io/login)访问。在浏览器中打开 web 版wallet后，可以看到两个选项: 进入钱包，创建新钱包。
 
 ![](./images/web-wallet-entry.png)
@@ -52,7 +53,64 @@ Conflux 官方的另外一个钱包是 Web 版的 wallet，不需要安装，直
 
 ## 运行本地节点
 Conflux Pontus目前运行的是 Rust 开发的 Conflux [协议实现](https://github.com/Conflux-Chain/conflux-rust)，运行本地节点可以直接下载编译好的节点程序或
-下载源码本地编译。为了完整体验，这里采用的
+下载源码本地编译。为了完整体验，这里采用下载源码进行编译的方式。（编译环境为OSX）。
+
+### 准备编译环境
+编译前需要先准备环境，安装必须的软件：Rust, cmake, clang等
+
+1. 在 osx 中开发，先安装 xcode command line 一定没错，可以直接在App store安装Xcode（包含command line 工具），或直接在终端执行命令```xcode-select --install```安装 (具体安装步骤可自行Google)
+2. 通过 rustup 安装 Rust 语言环境 
+    ```sh
+    $ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+    ```
+3. 安装brew （mac 下的包管理软件，神器）
+    ```sh
+    $ /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+    ```
+4. 安装 cmake (conflux-rust 编译回用到） ```brew install cmake```
+5. clang (xcode command line 包含，不需要单独安装，当然可以通过brew 安装 ```brew install llvm```)
+
+其他操作系统的环境准备方式可以参看官方的[文档](https://developer.conflux-chain.org/docs/conflux-doc/docs/installation)
+
+### 编译代码
+clone代码，编译：
+```sh
+# download Conflux code
+$ git clone https://github.com/Conflux-Chain/conflux-rust
+$ cd conflux-rust
+$ git checkout v0.5.0.4
+# build in release mode
+$ cargo build --release
+```
+
+目前的 conflux-rust 的版本号是 0.5.0.4 clone 代码和编译的过程时间比较长，需要耐心等待🤓（跟据网络情况，不一而同）。
+编译结束之后，会创建一个新的文件夹 target/release，里面包含一个 conflux 可执行文件，即是我们最终要运行的本地节点程序了。
+
+### 运行本地节点
+运行节点我们需要有一个配置文件，在代码 run目录下的 default.toml (toml格式文件) 是配置文件模板，我们只需要简单配置几项即可用于运行节点。
+
+1. ```public_address="124.193.101.50:32323"``` 节点对外的地址，有IP（公网IP，可以通过Google或百度搜索IP获得）和端口号（默认32323）组成
+2. ```mining_author=1386b4185a223ef49592233b69291bbe5a80c527``` 挖矿奖励目标账号，之前创建的账号可以填到这里（注意去掉地址前边的0x，不然启动会报错）
+3. ```bootnodes``` 此项是用于同步数据的启动节点地址配置，版本 0.5.5.4 这里默认配置的是主网 Pontus 的节点，可以不用修改
+4. ```start_mining=true``` 如果想开启挖矿，打开注释，并设置为true 
+5. ```jsonrpc_local_http_port=12539``` 本地 rpc 端口配置，打开注释，即可访问本地rpc服务
+
+设置好之后，就可以启动节点了
+```sh
+$ cd run
+$ ../target/release/conflux --config default.toml
+```
+
+如果一切正常的话，程序会尝试连接网络中的其他节点，并开始同步区块数据，你会看到 latest_epoch 数字，不停增长，追赶主网。
+
+![](./images/local-node-syncing.png)
+
+
+## 使用js-sdk发送交易
+
+
+
+
 
 
 ### 参考资料
