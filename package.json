@@ -1,0 +1,11 @@
+{
+  "name": "y",
+  "version": "1.0.0",
+  "description": "Conflux 智能合约开发体验 === [Conflux](https://confluxnetwork.org/) 是新一代高性能公链，基于自研的TreeGraph账本结构和GHAST共识协议，能够在完全去中心化的前提下，实现3000+TPS的吞吐率。 并且其智能合约VM，可以完全兼容EVM智能合约，意味着以太坊的智能合约可以不用改动直接部署到Conflux区块链上。 目前Conflux主网正在分阶段（共三阶段）上线，计划年内完成正式发布。目前处于第一阶段(Pontus), 小伙伴们可以提前体验Conflux 飞一般的速度。 本文是作者在Conflux 发布智能合约的一些记录",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
