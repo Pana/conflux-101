@@ -211,6 +211,10 @@ contract Coin {
         balances[receiver] += amount;
         emit Sent(msg.sender, receiver, amount);
     }
+    
+    function balanceOf(address tokenOwner) public view returns(uint balance){
+      return balances[tokenOwner];
+    }
 }
 ```
 
@@ -268,9 +272,12 @@ async function main() {
     bytecode: require('./contracts/coin.bin.json'),
   });
 
+  //Get deploy contract gas value
+  const estimate = await contract.constructor().estimateGasAndCollateral({from: account});
+  
   // deploy the contract, and get `contractCreated`
   const receipt = await contract.constructor()
-    .sendTransaction({ from: account })
+    .sendTransaction({ from: account , gas: estimate.getused })
     .confirmed();
   console.log(receipt); 
 }
@@ -321,6 +328,37 @@ const PRIVATE_KEY = '0xxxxxxx';
   // get balance of address
   ret = await contract.balances(address); 
   console.log(ret.toString());
+}
+
+main().catch(e => console.error(e));
+```
+
+```js
+// 
+const { Conflux, util } = require('js-conflux-sdk');
+
+async function main() {
+const PRIVATE_KEY = '0xxxxxxx';
+  const cfx = new Conflux({
+    url: 'http://testnet-jsonrpc.conflux-chain.org:12537',
+    defaultGasPrice: 100,
+    defaultGas: 1000000,
+    logger: console,
+  });
+
+  const contractAddress = '0x8a43514200778e9ff023039b55ca3192064f8e44';
+  const contract = cfx.Contract({
+    abi: require('./contracts/coin.abi.json'),
+    address: contractAddress,
+  });
+
+  let address = '0x1386B4185A223EF49592233b69291bbe5a80C527';
+
+  let ret;
+  // get balanceOf of address
+  ret = await contract.balanceOf(address); 
+  console.log(ret.toString());
+
 }
 
 main().catch(e => console.error(e));
