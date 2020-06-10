@@ -214,11 +214,11 @@ contract Coin {
 }
 ```
 
-Solidity 是智能合约开发的高级语言，不能直接部署，需要使用编译器，编译为 bytecode。以太坊社区开发工具众多，原生 solc(c++) 编译器， remix，truffle， Ethereum studio 均可用来编译，下边我们会使用知名的 Remix 在线 IDE 来编译 Coin 合约。
+Solidity 是智能合约开发的高级语言，不能直接部署，需要使用编译器，编译为 bytecode。以太坊社区开发工具众多，原生 solc(c++) 编译器， Remix，truffle， Ethereum studio 均可用来编译，下边我们会使用知名的 Remix 在线 IDE 来编译 Coin 合约。
 
 ### 使用 Remix 编译
 [Remix](https://remix.ethereum.org/)是一个以太坊智能合约在线IDE，提供智能合约开发，测试，编译，部署等功能，本文使用 Remix 来编译 coin 智能合约。
-打开 remix 网址之后我们会看到如下界面
+打开 Remix 网址之后我们会看到如下界面
 
 ![](./images/remix-home.jpg)
 
