@@ -23,6 +23,24 @@ Conflux 智能合约开发体验
 ### Conflux Portal
 [Conflux Portal](https://portal.conflux-chain.org/) 是一个浏览器扩展程序，需要到浏览器扩展市场安装。Portal 是在 MetaMask 基础之上修改，并适配Conflux网络的，其主要功能和使用方式跟 MetaMask 基本一致。
 
+安装完之后，首次进入会看到两个选项：创建新钱包或通过助记词导入（12 随机单词，用于备份账户）。如果选择创建新钱包，会随机生成新的助记词，你需要保存下来，并记好，因为下步会进行确认，而且助记词也是恢复和迁移钱包的唯一方式。
+
+![](./images/portal-entry.png)
+
+进行助记词确认，确认之后会需要设置一个密码，portal 会不定期锁定，之后进入需要输入密码。
+
+![](./images/portal-zhujici-confirm.png)
+
+一切设置完成之后你就有一个protal 钱包了，里面可以创建多个账户，查看地址私钥，收发CFX。
+
+![](./images/portal-main.png)
+
+需要注意的几点：
+
+1. 助记词非常关键，要保存好。
+2. 存入按钮里面有 faucet功能，可以申领测试代币。
+3. 账户详情里面可以查看私钥。
+
 
 ### (Web) Conflux Wallet
 Conflux 官方的另外一个钱包是 Web 版的 wallet，不需要安装，直接通过[网址](https://wallet.confluxscan.io/login)访问。在浏览器中打开 web 版 wallet 后，可以看到两个选项: 进入钱包，创建新钱包。
