@@ -55,4 +55,9 @@ contract Coin {
         // Emit event defined earlier
         emit Sent(msg.sender, receiver, amount);
     }
+    
+    //Return owner address balance
+    function balanceOf(address tokenOwner) public view returns(uint balance){
+      return balances[tokenOwner];
+    }
 }
