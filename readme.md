@@ -334,3 +334,8 @@ main().catch(e => console.error(e));
 
 1. [Conflux doc](https://developer.conflux-chain.org/)
 2. [Conflux 区块浏览器 confluxscan](http://www.confluxscan.io/)
+3. [Remix](https://remix.ethereum.org/)
+4. [Conflux wallet](https://wallet.confluxscan.io/login)
+5. [Conflux portal](https://portal.conflux-chain.org/)
+6. [以太坊官网](https://ethereum.org/)
+7. [js-conflux-sdk](https://github.com/Conflux-Chain/js-conflux-sdk)
