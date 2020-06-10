@@ -338,7 +338,7 @@ main().catch(e => console.error(e));
 const { Conflux, util } = require('js-conflux-sdk');
 
 async function main() {
-const PRIVATE_KEY = '0xxxxxxx';
+
   const cfx = new Conflux({
     url: 'http://testnet-jsonrpc.conflux-chain.org:12537',
     defaultGasPrice: 100,
