@@ -77,6 +77,8 @@ module.exports = {
 }
 ```
 
+这两项配置设置好之后，cfxtruffle 的使用体验就跟 truffle 完全一样了。
+
 ## cfxtruffle 使用简介
 这里对使用 cfxtruffle 开发的流程做一个简单的介绍，如果你对 truffle 已经很熟悉，可以直接跳过。
 
