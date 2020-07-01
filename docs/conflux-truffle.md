@@ -64,10 +64,10 @@ module.exports = {
         network_id: "*",       
         type: "conflux",  // type 设为 conflux
         provider: function() {
-        const provider = new HttpProvider('http://localhost:12537', {
-            chainAdaptor: ethToConflux
-        });
-        return provider;
+            const provider = new HttpProvider('http://localhost:12537', {
+                chainAdaptor: ethToConflux
+            });
+            return provider;
         }
         },
     }
