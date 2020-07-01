@@ -137,12 +137,47 @@ cfxtruffle 也提供了命令行式的交互环境，在该环境中可以直接
 
 ```sh
 $ cfxtruffle console  # 在项目目录下执行，开启交互模式
-
+# 初始合约实例
+truffle(develop)> let instance = await MetaCoin.deployed()
+truffle(develop)> instance
+# 获取余额
+truffle(develop)> let balance = await instance.getBalance(accounts[0])
+truffle(develop)> balance.toNumber()
+# 转账
+truffle(develop)> let result = await instance.sendCoin(accounts[1], 10, {from: accounts[0]})
+truffle(develop)> result
 ```
 
 #### 合约测试
 
+cfxtruffle 默认集成了 Mocha 和 chai 测试框架，可通过 test 子命令运行。
+
+单元测试代码示例：
+```js
+const MetaCoin = artifacts.require("MetaCoin");
+
+contract('MetaCoin', (accounts) => {
+  it('should put 10000 MetaCoin in the first account', async () => {
+    const metaCoinInstance = await MetaCoin.deployed();
+    const balance = await metaCoinInstance.getBalance.call(accounts[0]);
+
+    assert.equal(balance.valueOf(), 10000, "10000 wasn't in the first account");
+  });
+}
+```
+
+执行测试：
 ```sh
 $ cfxtruffle test
 ```
+
+## 未支持的功能
+
+目前 cfxtruffle 迁移还在不断进行中，以下命令还无法支持 conflux
+
+* develop
+
+
+## 总结
+cfxtruffle 可以大大减少智能合约开发工作量，目前核心功能（编译，部署，交互，测试）已完成兼容改造，其余 feature 也会持续迁移从而进行支持。
 
