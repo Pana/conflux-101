@@ -20,7 +20,7 @@ solidity global variable: block.number
 ### storageLimit
 
 
-
+### 代付费机制
 
 
 ###  Checklist for porting EVM contract to Conflux
@@ -32,6 +32,15 @@ solidity global variable: block.number
 5. Collateral for storage: Conflux 的存储需要抵押，所以请确保足够的余额用于抵押。
 
 
+### 账户地址
+
+在以太坊中普通账户地址和合约地址没有区别，在 conflux 则有不同的前缀。
+
+
+## Transaction field
+
+Conflux 添加了几个字段： chainId, epochHeight, storageLimit
+使用 epochNumber 替换了 number
 
 
 
