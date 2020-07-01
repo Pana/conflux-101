@@ -59,16 +59,16 @@ const {HttpProvider, ethToConflux} = require('web3-providers-http-proxy');
 module.exports = {
     networks: {
         development: {
-        host: "127.0.0.1",     
-        port: 12537,      // 本地节点的地址和端口号     
-        network_id: "*",       
-        type: "conflux",  // type 设为 conflux
-        provider: function() {
-            const provider = new HttpProvider('http://localhost:12537', {
-                chainAdaptor: ethToConflux
-            });
-            return provider;
-        }
+            host: "127.0.0.1",     
+            port: 12537,      // 本地节点的地址和端口号     
+            network_id: "*",       
+            type: "conflux",  // type 设为 conflux
+            provider: function() {
+                const provider = new HttpProvider('http://localhost:12537', {
+                    chainAdaptor: ethToConflux
+                });
+                return provider;
+            }
         },
     }
 
