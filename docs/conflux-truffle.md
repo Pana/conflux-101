@@ -24,7 +24,7 @@ $ cfxtruffle -h
 ```
 
 ## 运行本地节点
-智能合约开发，本地节点是必须的，truffle 套件中提供了 Ganache，这是一个以太坊本地节点，开发非常方便，Conflux 目前提供了智能合约开发的 Docker 镜像 [confluxchain/conflux-rust](https://hub.docker.com/r/confluxchain/conflux-rust)，也可以非常方便的启动本地节点。
+智能合约开发，本地节点是必须的，truffle 套件中提供了 Ganache，这是一个以太坊本地节点，开发非常方便，Conflux 目前提供了 conflux-rust 的 Docker 镜像 [confluxchain/conflux-rust](https://hub.docker.com/r/confluxchain/conflux-rust)，也可以非常方便的启动本地节点。
 
 ```sh
 # 下载镜像
@@ -39,9 +39,9 @@ $ docker run -p 12537:12537 --name cfx-node confluxchain/conflux-rust
 $ docker run -p 12537:12537 -v $(pwd)/run:/root/run --name cfx-node confluxchain/conflux-rust
 ```
 
-注意：该镜像首次启动时，会自动创建 10 个账号，每个账号会分配 1000 CFX，可以用于测试，该进行默认以 dev 模式运行，当然你也可以使用自定义配置，但目前`不建议`使用该镜像运行`正式环境`节点。
+注意：该镜像首次启动时，会自动创建 10 个账号，每个账号会分配 1000 CFX，可以用于测试，该镜像默认以 dev 模式运行，当然你也可以使用自定义配置，但目前`不建议`使用该镜像运行`正式环境`节点。
 
-如果电脑没有 Docker 环境或对 Docker 不熟悉，可以直接下载或编译 Conflux 节点程序，本地运行，具体方法可参看[这里](./docs/how-to-run-a-local-independent-node.md)。（节点起来之后需要通过 conflux account new 创建几个账号，并转一些 CFX）
+如果电脑没有 Docker 环境或对 Docker 不熟悉，可以直接下载或编译 Conflux 节点程序，本地运行，具体方法可参看[这里](https://github.com/Pana/conflux-101/blob/master/docs/how-to-run-a-local-independent-node.md)。（节点起来之后需要通过 conflux account new 创建几个账号，并转一些 CFX）
 
 
 ## cfxtruffle 使用的区别
