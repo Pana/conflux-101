@@ -43,41 +43,7 @@ $ docker run -p 12537:12537 -v $(pwd)/run:/root/run --name cfx-node confluxchain
 
 如果电脑没有 Docker 环境或对 Docker 不熟悉，可以直接下载或编译 Conflux 节点程序，本地运行，具体方法可参看[这里](https://github.com/Pana/conflux-101/blob/master/docs/how-to-run-a-local-independent-node.md)。（节点起来之后需要通过 conflux account new 创建几个账号，并转一些 CFX）
 
-
-## cfxtruffle 使用的区别
-
-cfxtruffle 的总体使用方法与 truffle 保持一致，只需要在 `truffle-config.js` 配置文件中做一些配置修改。主要包含两点：
-1. 将  `network` 设置为 `conflux`
-2. 使用自定义 provider `web3-providers-http-proxy`
-
-具体可参看如下示例：
-
-```js
-// before use you need npm install this module: `npm i web3-providers-http-proxy`
-const {HttpProvider, ethToConflux} = require('web3-providers-http-proxy');
-
-module.exports = {
-    networks: {
-        development: {
-            host: "127.0.0.1",     
-            port: 12537,      // 本地节点的地址和端口号     
-            network_id: "*",       
-            type: "conflux",  // type 设为 conflux
-            provider: function() {
-                const provider = new HttpProvider('http://localhost:12537', {
-                    chainAdaptor: ethToConflux
-                });
-                return provider;
-            }
-        },
-    }
-
-    // other configs
-    ...
-}
-```
-
-这两项配置设置好之后，cfxtruffle 的使用体验就跟 truffle 完全一样了。
+本地节点运行起来之后，就可以直接使用 cfxtruffle 了，使用体验跟 truffle 完全一致。
 
 ## cfxtruffle 使用简介
 这里对使用 cfxtruffle 开发的流程做一个简单的介绍，如果你对 truffle 已经很熟悉，可以直接跳过。
