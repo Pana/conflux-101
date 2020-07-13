@@ -277,7 +277,7 @@ async function main() {
   
   // deploy the contract, and get `contractCreated`
   const receipt = await contract.constructor()
-    .sendTransaction({ from: account , gas: estimate.getUsed })
+    .sendTransaction({ from: account , gas: estimate.gasUsed })
     .confirmed();
   console.log(receipt); 
 }
