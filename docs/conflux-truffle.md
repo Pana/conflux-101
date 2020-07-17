@@ -41,7 +41,7 @@ $ docker run -p 12537:12537 -v $(pwd)/run:/root/run --name cfx-node confluxchain
 
 注意：该镜像首次启动时，会自动创建 10 个账号，每个账号会分配 1000 CFX，可以用于测试，该镜像默认以 dev 模式运行，当然你也可以使用自定义配置，但目前`不建议`使用该镜像运行`正式环境`节点。
 
-如果电脑没有 Docker 环境或对 Docker 不熟悉，可以直接下载或编译 Conflux 节点程序，本地运行，具体方法可参看[这里](https://github.com/Pana/conflux-101/blob/master/docs/how-to-run-a-local-independent-node.md)。（节点起来之后需要通过 conflux account new 创建几个账号，并转一些 CFX）
+如果电脑没有 Docker 环境或对 Docker 不熟悉，可以直接下载或编译 Conflux 节点程序，本地运行，具体方法可参看[这里](https://github.com/Pana/conflux-101/blob/master/docs/how-to-run-a-local-independent-node.md)。（节点起来之后需要通过 conflux account new 创建几个账号, 密码需设为 `123456`，并转一些 CFX）
 
 本地节点运行起来之后，就可以直接使用 cfxtruffle 了，使用体验跟 truffle 完全一致。
 
@@ -53,7 +53,7 @@ $ docker run -p 12537:12537 -v $(pwd)/run:/root/run --name cfx-node confluxchain
 ```sh
 $ cfxtruffle init 
 ```
-另外 truffle 也提供了许多项目模板叫做 [box](https://www.trufflesuite.com/boxes)，可以使用 unbox 命令下载模板，快速开发
+另外 truffle 也提供了许多项目模板叫做 [box](https://www.trufflesuite.com/boxes)，可以使用 unbox 命令下载模板，快速开发(有时需要翻墙)
 
 ```sh
 $ mkdir MetaCoin
@@ -100,20 +100,20 @@ deploy 跟 migrate 本质上是一个命令，truffle 使用 migration 脚本的
 另外 cfxtruffle deploy 有几个参数(--reset, --from, --to)可以控制 migration 的执行规则，具体可参看 cfxtruffle help
 
 #### 合约交互
-
-cfxtruffle 也提供了命令行式的交互环境，在该环境中可以直接获取或更新合约的状态。
+cfxtruffle 也提供了命令行式的交互环境，在该环境中可以直接获取或更新合约的状态。在 console 环境中不仅集成了合约对应的 js 类，
+还包含了 `cfx`， `cfxutil` 对象，可以直接使用，非常方便（具体用法可参看 js-conflux-sdk）。
 
 ```sh
 $ cfxtruffle console  # 在项目目录下执行，开启交互模式
 # 初始合约实例
-truffle(develop)> let instance = await MetaCoin.deployed()
-truffle(develop)> instance
+cfxtruffle(develop)> let instance = await MetaCoin.deployed()
+cfxtruffle(develop)> instance
 # 获取余额
-truffle(develop)> let balance = await instance.getBalance(accounts[0])
-truffle(develop)> balance.toNumber()
+cfxtruffle(develop)> let balance = await instance.getBalance(accounts[0])
+cfxtruffle(develop)> balance.toNumber()
 # 转账
-truffle(develop)> let result = await instance.sendCoin(accounts[1], 10, {from: accounts[0]})
-truffle(develop)> result
+cfxtruffle(develop)> let result = await instance.sendCoin(accounts[1], 10, {from: accounts[0]})
+cfxtruffle(develop)> result
 ```
 
 #### 合约测试
@@ -139,11 +139,25 @@ contract('MetaCoin', (accounts) => {
 $ cfxtruffle test
 ```
 
+## 部署到远端节点
+cfxtruffle 同样支持部署到远端节点，只需要在配置文件中配好需要部署用户的私钥(`privateKeys`)即可。
+
+```js
+development: {
+    host: "mainnet-rpc.com",     
+    port: 12537,
+    network_id: "*",       
+    privateKeys: ["keys1xxxxxx", "keys1xxxxxx"], 
+},
+```
+这样在部署合约，以及与合约交互的时候会使用这里配置的私钥对应的账号。
+
 ## 未支持的功能
 
 目前 cfxtruffle 迁移还在不断进行中，以下命令还无法支持 conflux
 
 * develop
+* build
 
 
 ## 总结
