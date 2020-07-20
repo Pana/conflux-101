@@ -32,18 +32,21 @@ $ docker pull confluxchain/conflux-rust
 # 运行节点
 $ docker run -p 12537:12537 --name cfx-node confluxchain/conflux-rust
 ```
+注意：该镜像首次启动时，会自动创建 10 个账号，每个账号会分配 1000 CFX，可以用于测试，该镜像默认以 dev 模式运行
 
-镜像运行时也可以挂载本地目录（目录中需包含文件：default.toml, log.yaml, throttling.toml），这样可以使用自定义配置文件，节点运行的数据也会保存到本地目录中，container 删掉重启数据也可以保留。
+当然你也可以使用自定义配置，镜像运行时也可以挂载本地目录（目录中需包含文件：default.toml, log.yaml, throttling.toml），这样可以使用自定义配置文件，节点运行的数据也会保存到本地目录中，container 删掉重启数据也可以保留。
 ```sh
 # 使用本地配置运行节点
 $ docker run -p 12537:12537 -v $(pwd)/run:/root/run --name cfx-node confluxchain/conflux-rust
 ```
+如果电脑没有 Docker 环境或对 Docker 不熟悉，可以直接下载或编译 Conflux 节点程序，本地运行，具体方法可参看[这里](https://github.com/Pana/conflux-101/blob/master/docs/how-to-run-a-local-independent-node.md)。
 
-注意：该镜像首次启动时，会自动创建 10 个账号，每个账号会分配 1000 CFX，可以用于测试，该镜像默认以 dev 模式运行，当然你也可以使用自定义配置，但目前`不建议`使用该镜像运行`正式环境`节点。
+如果 Docker 使用自定义配置文件，或者使用本地程序运行，节点起来之后需要手动准备一些账号用于测试：
+1. `conflux local account new` 创建几个账号 (注意：docker 模式不要使用 account new创建账号)
+2. 转一些 CFX (从 mining_author 地址转账)
+3. `rpc local account unlock --address your-address` 解锁账号
 
-如果电脑没有 Docker 环境或对 Docker 不熟悉，可以直接下载或编译 Conflux 节点程序，本地运行，具体方法可参看[这里](https://github.com/Pana/conflux-101/blob/master/docs/how-to-run-a-local-independent-node.md)。（节点起来之后需要通过 conflux account new 创建几个账号, 密码需设为 `123456`，并转一些 CFX）
-
-本地节点运行起来之后，就可以直接使用 cfxtruffle 了，使用体验跟 truffle 完全一致。
+这样就可以直接使用 cfxtruffle 了，使用体验跟 truffle 完全一致。
 
 ## cfxtruffle 使用简介
 这里对使用 cfxtruffle 开发的流程做一个简单的介绍，如果你对 truffle 已经很熟悉，可以直接跳过。
