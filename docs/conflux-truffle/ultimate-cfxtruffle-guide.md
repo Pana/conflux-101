@@ -476,6 +476,55 @@ Conflux portal 的测试环境 `存入` 按钮里面提供了 CFX 水龙头，�
 $ cfxtruffle deploy --network testnet
 ```
 
+### 执行外部脚本或命令
+cfxtruffle 还提供了两个命令 `exec`, `run` 可用于执行外部脚本，脚本里可以编写一些与合约交互的逻辑，许多时候这会非常有用。
+
+你可以在项目根目录下添加一个脚本 get-balance.js 内容如下
+
+```js
+const Coin = artifacts.require("Coin");
+module.exports = async function(callback) {
+    try {
+        let instance = await Coin.deployed();
+        let accounts = await cfx.getAccounts();
+        let balance = await instance.balances(accounts[0]);
+        console.log(`balance of ${accounts[0]} is: ${balance.toString()}`);
+    } catch(e) {
+        console.error(e);
+    }
+    callback();
+}
+```
+然后就可以使用 exec 命令执行它了
+```sh
+$ cfxtruffle exec ./get-balance.js
+```
+
+`run` 命令则可用于执行 truffle 的 plugin：
+
+```sh
+$ npm install --save-dev truffle-plugin-hello
+```
+并在 truffle-config.js 中添加对插件的声明
+```js
+module.exports = {
+  /* ... rest of truffle-config */
+
+  plugins: [
+    "truffle-plugin-hello"
+  ]
+}
+```
+然后就可以用 run 命令执行了
+
+```sh
+$ cfxtruffle run hello
+```
+
+现在在 npm 上面有一些 合约 verify，lint，coverage 等插件可以直接使用, 当然你也可以编写自己的插件，具体方法参看[这里](https://www.trufflesuite.com/docs/truffle/getting-started/writing-external-scripts#creating-a-custom-command-plugin)
+
+
+
 
 ## 总结
 至此我们从头到尾使用 cfxtruffle 开发了一个 Coin 智能合约，其各个功能的使用方法及其他高级命令没有一一详细介绍，可以参看 truffle 的官方文档。
