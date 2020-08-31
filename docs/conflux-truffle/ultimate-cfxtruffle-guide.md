@@ -541,3 +541,4 @@ Conflux 作为新一代公链，主网即将完全上线，希望智能合约开
 6. [js-conflux-sdk](https://github.com/Conflux-Chain/js-conflux-sdk)
 7. [conflux portal](https://portal.conflux-chain.org/)
 8. [conflux scan](http://www.confluxscan.io/)
+9. [conflux truffle](https://www.npmjs.com/package/conflux-truffle)
