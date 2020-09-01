@@ -30,12 +30,12 @@ Conflux 作为新一代完全去中心化，高性能公链，马上会迎来主
 3. 安装 `js-conflux-sdk`
 
 
-##### Conflux Portal
+#### Conflux Portal
 Portal 是基于浏览器的 Conflux 插件钱包，本质是从 MetaMask fork 过来的，因此使用方法与 MetaMask 保持一致。Portal 负责管理 Conflux 的账户(私钥)，最核心功能是用私钥签名交易，并发送交易。
 因此 Portal 是用户跟 Dapp 交互的钥匙。Portal 的具体安装和使用方法[参看这里](https://juejin.im/post/6844904132948525070)
 
 
-##### 基本概念
+#### 基本概念
 
 1. Epoch: 在比特币和以太坊中区块链都是链装结构，每个区块有一个递增的编号称为 block_number，在 conflux 中，其存储数据的账本结构是树图，无法给区块分配递增编号，但为了确定所有区块的全序，
 定义了 Epoch 的概念，Epoch 序号单调递增，每个 Epoch 中可能会有多个 block，在 Epoch 内部 block 有其顺序(index)
@@ -47,7 +47,7 @@ Portal 是基于浏览器的 Conflux 插件钱包，本质是从 MetaMask fork �
 7. receipt status: 在 conflux 中 receipt.outcomeStatus 表示交易的执行状态 0-成功，1-失败 跟以太坊相反
 
 
-##### web3.js vs js-conflux-sdk
+#### web3.js vs js-conflux-sdk
 两者分别是以太坊和 Conflux 的 JavaScript SDK。主要功能均是提供了 RPC 调用的封装，Contract 交互封装，以及一些编解码，单位，类型转换等常用方法。
 这里对两者的使用方法做一个简单对比
 
@@ -91,7 +91,7 @@ const balance = await web3.eth.getBalance('0x1bd9e9be525ab967e633bcdaeac8bd5723e
 const balance = await cfx.getBalance('0x1bd9e9be525ab967e633bcdaeac8bd5723ed4d6b');
 ```
 
-conflux 方法调用非常简洁返回的是一个 promise，web3 则提供更复杂的功能：即支持promise，也支持callback
+conflux 方法调用非常简洁返回的是一个 promise，web3 则提供更复杂的功能：即支持promise，又支持callback
 
 ```js
 // web3 promise vs callback
@@ -320,19 +320,20 @@ this.instance
 
 这些修改完之后我们就完成了 Dapp 交互部分代码的迁移工作。
 
+最后如果你想体验这个 Dapp 的话，可以来[这里](http://pana.wang/crypto_pizza/), 前提需要先装好 Portal 哟.
+
 #### 其他
 
 1. 本文使用的 js-conflux-sdk 版本为 0.13.2
 2. Pizza 列表页的数据加载时机改为了在 tab 切换时加载
-3. 
 
 
 
 ### 参考
 
-1. [js-conflux-sdk]()
-2. [conflux portal]()
-3. [ethereum studio]()
+1. [js-conflux-sdk](https://github.com/conflux-chain/js-conflux-sdk)
+2. [conflux portal](https://developer.conflux-chain.org/docs/conflux-portal/docs/en/portal/introduction)
+3. [ethereum studio](https://studio.ethereum.org/)
 
 
 
