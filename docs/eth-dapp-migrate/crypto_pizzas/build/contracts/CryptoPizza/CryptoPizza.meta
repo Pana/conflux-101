@@ -1,0 +1,39 @@
+{
+    "compile": {
+        "gasEstimates": {
+            "creation": {
+                "codeDepositCost": "2197000",
+                "executionCost": "infinite",
+                "totalCost": "infinite"
+            },
+            "external": {
+                "approve(address,uint256)": "22951",
+                "balanceOf(address)": "646",
+                "burn(uint256)": "infinite",
+                "createRandomPizza(string)": "infinite",
+                "generateRandomDna(string,address)": "infinite",
+                "getApproved(uint256)": "1085",
+                "getPizzasByOwner(address)": "infinite",
+                "isApprovedForAll(address,address)": "862",
+                "ownerOf(uint256)": "821",
+                "ownerPizzaCount(address)": "684",
+                "pizzaToOwner(uint256)": "628",
+                "pizzas(uint256)": "infinite",
+                "safeTransferFrom(address,address,uint256)": "infinite",
+                "safeTransferFrom(address,address,uint256,bytes)": "infinite",
+                "setApprovalForAll(address,bool)": "22692",
+                "supportsInterface(bytes4)": "682",
+                "takeOwnership(uint256)": "infinite",
+                "transferFrom(address,address,uint256)": "infinite"
+            },
+            "internal": {
+                "_checkOnERC721Received(address,address,uint256,bytes memory)": "infinite",
+                "_clearApproval(address,uint256)": "infinite",
+                "_createPizza(string memory,uint256)": "infinite",
+                "_exists(uint256)": "382",
+                "_isApprovedOrOwner(address,uint256)": "infinite",
+                "isContract(address)": "747"
+            }
+        }
+    }
+}
