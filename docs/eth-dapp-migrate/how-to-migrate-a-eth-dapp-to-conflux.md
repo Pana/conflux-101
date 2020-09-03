@@ -2,8 +2,8 @@
 ===
 
 Conflux 作为新一代完全去中心化，高性能公链，马上会迎来主网上线。除了性能比以太坊提高两个量级之外，其另外一大亮点是智能合约 VM 兼容 solidity。
-也就是说一个以太坊的 Dapp 合约可以不用或很少修改即可直接部署到 Conflux 主链上。而你需要做的只是在 web 交互部分使用 js-conflux-sdk 替换 web3.js
-本文我们会演示如何将一个以太坊 Dapp 部署到 Conflux 网络上。
+也就是说一个以太坊的 Dapp 合约可以少量修改快速部署到 Conflux 主链上。开发者只需要将 web3.js 交互部分改用 js-conflux-sdk 实现即可。
+本文将会演示如何将一个以太坊 Dapp 部署到 Conflux 网络上。
 
 这里我们使用 [ethereum studio](https://studio.ethereum.org/) 提供的模板项目 CryptoPizza NFT 作为例子，尝试将他部署到 Conflux 网络。CryptoPizza 是一个链上 NFT （non-fungible tokens）合约，NFT 不同于 ERC20 所表示的货币，他的每个 token 通常用于表示一个唯一的实体，token 各不相同，一般用于表示实物财产或艺术品。
 这里用于表示 Pizza，每个 Pizza 都不尽相同。该 Dapp 支持 Pizza 的 create, eat, gift 三种操作。其使用界面如下：
@@ -25,14 +25,14 @@ Conflux 作为新一代完全去中心化，高性能公链，马上会迎来主
 
 ### 迁移环境准备
 
-1. 安装 Conflux 钱包(Portal), 创建账户并申领一笔 CFX（用于发送交易，部署合约）
+1. 安装 Conflux 钱包(Portal), 创建账户并申领一笔 CFX（点击 Portal 的存入按钮，可以看到测试水龙头，领取代币）
 2. Conflux 基本概念
 3. 安装 `js-conflux-sdk`
 
 
 #### Conflux Portal
-Portal 是基于浏览器的 Conflux 插件钱包，本质是从 MetaMask fork 过来的，因此使用方法与 MetaMask 保持一致。Portal 负责管理 Conflux 的账户(私钥)，最核心功能是用私钥签名交易，并发送交易。
-因此 Portal 是用户跟 Dapp 交互的钥匙。Portal 的具体安装和使用方法[参看这里](https://juejin.im/post/6844904132948525070)
+Portal 是基于浏览器的 Conflux 插件轻量级钱包，基于不重复造轮子的想法，框架基于MetaMask改进而来，因此使用方法与 MetaMask 基本一致。Portal 负责管理 Conflux 的账户(私钥)，最核心功能是用私钥签名交易，并发送交易。
+因此 Portal 是用户跟 Dapp 交互的钥匙媒介。Portal 的具体安装和使用方法参看[这里](https://juejin.im/post/6844904132948525070)
 
 
 #### 基本概念
@@ -236,7 +236,7 @@ $(document).on('click', 'button.connect-portal', async function() {
 // 2. 设置provider
 this.web3.provider = conflux;
 
-// 3. 使用 selectdAddress 发送 tx
+// 3. 使用conflux.selectedAddress 获取当前选中的账户地址
 conflux.selectedAddress
 ```
 
