@@ -460,8 +460,8 @@ cfxtruffle 每次运行测试，都会完全新部署一个合约（clean-room�
 然后需要设置 privateKeys 字段，该字段是一个私钥数组（远端部署只能在本地进行签名）。
 ```js
 testnet: {
-    host: "wallet-testnet-jsonrpc.conflux-chain.org",
-    port: 12537,            
+    host: "test.confluxrpc.org",
+    port: 80,            
     network_id: "*",       
     // 注意：从 portal 获取的私钥需要添加 0x 前缀，privateKeys 也可以指定单个 key，若配置了私钥，请注意不要将代码上传到公开代码仓储中。
     privateKeys: ['your-private-key']  
