@@ -1,7 +1,7 @@
 Conflux 101
 ===
 
-本项目记录了 Conflux 网络的一些总结和知识
+Conflux 技术相关文档
 
 ### 目录
 
@@ -10,3 +10,4 @@ Conflux 101
 3. [以太坊和 conflux 的区别](./docs/ethereum-conflux-difference.md) 未完
 4. [Conflux basics](./docs/conflux-basics.md) 未完
 5. [Conflux-Truffle](./docs/conflux-truffle.md)
+6. [Conflux concepts](./docs/conflux-concepts.md)

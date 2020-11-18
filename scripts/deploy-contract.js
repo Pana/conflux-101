@@ -17,8 +17,8 @@ async function main() {
   // ================================ Contract ================================
   // create contract instance
   const contract = cfx.Contract({
-    abi: require('./contracts/coin.abi.json'),
-    bytecode: require('./contracts/coin.bin.json'),
+    abi: require('../contracts/coin.abi.json'),
+    bytecode: require('../contracts/coin.bin.json'),
   });
 
   // estimate deploy contract gas use

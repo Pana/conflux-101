@@ -3,11 +3,13 @@ Conflux 和 以太坊的区别
 众所周知以太坊是目前最成功的区块链 2.0 平台，公认的世界计算机。吸引了全球的区块链开发者在其上开发应用，并建立了强大的金融，游戏生态。
 但以太坊的 TPS 虽然比比特币略快，但仍然远远无法满足普通大众的使用需求。所以才有了 EOS，Tron 等标榜区块链 3.0 的平台。
 但 DPOS 共识协议远远牺牲了区块链平台的去中心化程度。
-Conflux 作为新一代平台中的知名项目，使用独特的 TreeGraph 账本结构和 GHAST 共识协议，能够将 TPS 提升至 3000-60000，并且仍然是完全去中心化的。
+Conflux 作为新一代平台中的知名项目，使用独特的 TreeGraph 账本结构和 GHAST 共识协议，能够将 TPS 提升至 3000-6000，并且仍然是完全去中心化的。
 Conflux 的智能合约虚拟机几乎完全兼容 EVM，使得大部分 Solidity 智能合约可以直接部署到 Conflux 网络中。
 但因为底层账本结构的巨大差异，智能合约开发过程中还是有一些差异，本文对这些差异做一些简单总结，希望在小伙伴们开发 Conflux 智能合约过程中会有帮助。
 
-![](../images/eth-vs-conflux.png)
+
+### 树图账本 vs 链式账本
+
 
 ### EpochNumber vs BlockNumber
 
@@ -43,7 +45,7 @@ Conflux 添加了几个字段： chainId, epochHeight, storageLimit
 使用 epochNumber 替换了 number
 
 
-
+![](../images/eth-vs-conflux.png)
 
 
 ### 参考

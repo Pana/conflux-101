@@ -11,7 +11,7 @@ async function main() {
 
   const contractAddress = '0x8a43514200778e9ff023039b55ca3192064f8e44';
   const contract = cfx.Contract({
-    abi: require('./contracts/coin.abi.json'),
+    abi: require('../contracts/coin.abi.json'),
     address: contractAddress,
   });
 
