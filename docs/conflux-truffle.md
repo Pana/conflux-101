@@ -147,7 +147,7 @@ cfxtruffle 同样支持部署到远端节点，只需要在配置文件中配好
 
 ```js
 development: {
-    host: "http://test.confluxrpc.com",     
+    host: "test.confluxrpc.com",     
     port: 80,
     network_id: "*",       
     privateKeys: ["keys1xxxxxx", "keys1xxxxxx"], 
